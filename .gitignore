@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+.env*
+!.env.example
+.local/
+
+/output/
+/public/videos/*.mp4
+/public/videos/optimized/
+/*.png
