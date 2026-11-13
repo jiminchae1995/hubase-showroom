@@ -44,7 +44,7 @@ test("영상 지연 로딩, 10초 순환, 호버 우선 재생과 모달 전환"
   await first.click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await expect(page.locator(".short-preview")).toHaveCount(0);
-  await expect(page.locator(".video-stage iframe")).toHaveAttribute("src", new RegExp("/video/1242714429[?]"));
+  await expect(page.locator(".video-stage video source")).toHaveAttribute("src", "/videos/showroom/clip-divider.mp4");
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toHaveCount(0);
 

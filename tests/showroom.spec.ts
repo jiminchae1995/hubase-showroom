@@ -20,7 +20,7 @@ test("제품 탐색: 분류, 검색, 빈 결과, 초기화", async ({ page }) =>
   expect(errors).toEqual([]);
 });
 
-test("클립형 디바이더 Vimeo 모달: 연결, 포커스 가두기, ESC, 포커스 복원", async ({
+test("클립형 디바이더 MP4 모달: 연결, 포커스 가두기, ESC, 포커스 복원", async ({
   page,
 }) => {
   await page.goto("/");
@@ -36,9 +36,9 @@ test("클립형 디바이더 Vimeo 모달: 연결, 포커스 가두기, ESC, 포
       .getByRole("dialog")
       .getByRole("link", { name: "구매하러 가기", exact: true }),
   ).toHaveAttribute("href", "https://www.hubase.kr/goods/115161");
-  await expect(page.locator(".video-stage iframe")).toHaveAttribute(
+  await expect(page.locator(".video-stage video source")).toHaveAttribute(
     "src",
-    new RegExp("https://player.vimeo.com/video/1242714429[?]"),
+    "/videos/showroom/clip-divider.mp4",
   );
   await expect(
     page.getByRole("button", { name: "클립형 디바이더 영상 보기" }),
@@ -59,23 +59,22 @@ test("클립형 디바이더 Vimeo 모달: 연결, 포커스 가두기, ESC, 포
   );
 });
 
-test("쇼츠 카드 7개가 각 Vimeo 플레이어에 연결됨", async ({ page }) => {
-  await page.route("https://player.vimeo.com/**", route => route.fulfill({ body: "" }));
+test("쇼츠 카드 7개가 각 MP4에 연결됨", async ({ page }) => {
   await page.goto("/");
   const videos = [
-    ["클립형 디바이더", "1242714429"],
-    ["베이스레일", "1242714431"],
-    ["수동 푸셔", "1242714430"],
-    ["자동 푸셔", "1246158468"],
-    ["프라이스레일", "1246158458"],
-    ["스윙홀더", "1246158459"],
-    ["프론트선반", "1246186655"],
+    ["클립형 디바이더", "clip-divider"],
+    ["베이스레일", "divider-base"],
+    ["수동 푸셔", "manual-pusher"],
+    ["자동 푸셔", "auto-pusher"],
+    ["프라이스레일", "standard-rail"],
+    ["스윙홀더", "swing-holder"],
+    ["프론트선반", "front-shelf"],
   ];
 
   for (const [name, id] of videos) {
     await page.getByRole("button", { name: name + " 영상 보기", exact: true }).click();
-    const player = page.locator(".video-stage iframe");
-    await expect(player).toHaveAttribute("src", new RegExp("/video/" + id + "[?]"));
+    const player = page.locator(".video-stage video source");
+    await expect(player).toHaveAttribute("src", "/videos/showroom/" + id + ".mp4");
     await page.getByRole("button", { name: "닫기", exact: true }).click();
     await expect(player).toHaveCount(0);
   }
