@@ -42,7 +42,7 @@ test("클립형 디바이더 MP4 모달: 연결, 포커스 가두기, ESC, 포�
   );
   await expect(
     page.getByRole("button", { name: "클립형 디바이더 영상 보기" }),
-  ).toContainText("01:21");
+  ).toContainText("00:36");
   await page.keyboard.press("Tab");
   expect(
     await page.evaluate(() => !!document.activeElement?.closest("dialog")),
