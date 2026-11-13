@@ -537,60 +537,67 @@ export default function Showroom() {
               </span>
             </div>
             <div className="product-grid">
-              {filtered.map((product, index) => (
-                <article className="product-card" key={product.id}>
-                  {product.imageUrl && <button
-                    className="product-image"
-                    onClick={() => openVideo(product)}
-                    aria-label={`${product.name} 자세히 보기`}
-                  >
-                    <span className="product-index">
-                      {String(products.indexOf(product) + 1).padStart(2, "0")}
-                    </span>
-                    <MediaImage
-                      src={product.imageUrl}
-                      alt={product.name}
-                      sizes="(max-width: 550px) 90vw, (max-width: 1023px) 45vw, 25vw"
-                      fallback={
-                        <>
-                          <span className="asset-pending">
-                            제품 사진 준비 중
-                          </span>
-                        </>
-                      }
-                    />
-                    <span className="product-view">
-                      <ArrowUpRight size={18} />
-                    </span>
-                  </button>}
-                  <div className="product-copy">
-                    <span className="product-category">
-                      {product.category.join(" · ")}
-                    </span>
-                    <h3>{product.name}</h3>
-                    <p>{product.shortDescription}</p>
-                    <div className="product-actions">
-                      {safePurchaseUrl(product.purchaseUrl) ? (
-                        <a
-                          href={safePurchaseUrl(product.purchaseUrl)!}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          구매하러 가기
-                          <ArrowUpRight size={14} />
-                        </a>
-                      ) : (
-                        <button
-                          disabled
-                          title="실제 구매 URL이 등록되면 활성화됩니다"
-                        >
-                          구매 링크 준비 중<ArrowUpRight size={14} />
-                        </button>
-                      )}
+              {filtered.map((product) => {
+                const purchaseUrl = safePurchaseUrl(product.purchaseUrl);
+                const imagePurchaseUrl = product.id === "front-shelf" ? purchaseUrl : null;
+                const ProductImage = imagePurchaseUrl ? "a" : "button";
+                return (
+                  <article className="product-card" key={product.id}>
+                    {product.imageUrl && <ProductImage
+                      className="product-image"
+                      {...(imagePurchaseUrl
+                        ? { href: imagePurchaseUrl, target: "_blank", rel: "noopener noreferrer" }
+                        : { onClick: () => openVideo(product) })}
+                      aria-label={`${product.name} ${imagePurchaseUrl ? "구매 페이지 열기" : "자세히 보기"}`}
+                    >
+                      <span className="product-index">
+                        {String(products.indexOf(product) + 1).padStart(2, "0")}
+                      </span>
+                      <MediaImage
+                        src={product.imageUrl}
+                        alt={product.name}
+                        sizes="(max-width: 550px) 90vw, (max-width: 1023px) 45vw, 25vw"
+                        fallback={
+                          <>
+                            <span className="asset-pending">
+                              제품 사진 준비 중
+                            </span>
+                          </>
+                        }
+                      />
+                      <span className="product-view">
+                        <ArrowUpRight size={18} />
+                      </span>
+                    </ProductImage>}
+                    <div className="product-copy">
+                      <span className="product-category">
+                        {product.category.join(" · ")}
+                      </span>
+                      <h3>{product.name}</h3>
+                      <p>{product.shortDescription}</p>
+                      <div className="product-actions">
+                        {purchaseUrl ? (
+                          <a
+                            href={purchaseUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            구매하러 가기
+                            <ArrowUpRight size={14} />
+                          </a>
+                        ) : (
+                          <button
+                            disabled
+                            title="실제 구매 URL이 등록되면 활성화됩니다"
+                          >
+                            구매 링크 준비 중<ArrowUpRight size={14} />
+                          </button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                );
+              })}
             </div>
             {filtered.length === 0 && (
               <div className="empty-results">
