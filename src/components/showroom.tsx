@@ -192,10 +192,12 @@ export default function Showroom() {
         <div className="header-inner">
           <a
             href="#showroom"
-            aria-label="휴베이스 쇼룸 홈"
+            className="header-brand"
+            aria-label="휴베이스 진열용품 쇼룸 홈"
             onClick={() => setMenuOpen(false)}
           >
             <Logo />
+            <span className="header-brand-label">진열용품</span>
           </a>
           <nav aria-label="주 메뉴" className="desktop-nav">
             {navItems.map(([label, id]) => (

@@ -212,6 +212,16 @@ img {
   align-items: center;
   gap: 75px;
 }
+.header-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(6px, 1vw, 12px);
+}
+.header-brand-label {
+  font-size: clamp(12px, 1.25vw, 16px);
+  font-weight: 700;
+  white-space: nowrap;
+}
 .logo {
   display: flex;
   align-items: center;
