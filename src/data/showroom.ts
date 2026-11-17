@@ -73,7 +73,7 @@ export const products: Product[] = [
     id: "fridge-rail",
     purchaseUrl: "https://www.hubase.kr/goods/115261",
     imageUrl: "/images/products/fridge-rail-studio.png",
-    name: "프라이스레일",
+    name: "냉장고 프라이스레일",
     shortDescription: "냉장고 안 가격표도 한눈에 읽기 쉽게.",
     category: ["가격표 표시"],
     searchTags: ["냉장고", "가격", "라벨", "가격표"],
