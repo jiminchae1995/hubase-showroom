@@ -107,27 +107,30 @@ test("캐러셀, 현장 사례, 구매 링크", async ({ page }) => {
   }
 });
 
-test("모바일 메뉴 및 8개 화면 폭에서 가로 넘침 없음", async ({ page }) => {
-  for (const width of [1920, 1440, 1280, 1024, 768, 430, 390, 375]) {
+test("모바일 하단 메뉴 및 9개 화면 폭에서 가로 넘침 없음", async ({ page }) => {
+  for (const width of [1920, 1440, 1280, 1024, 768, 430, 390, 375, 320]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth),
     ).toBe(width);
-    await expect(page.locator(".product-card")).toHaveCount(10);
+    await expect(page.locator(".product-card")).toHaveCount(8);
   }
-  await page.getByRole("button", { name: "메뉴 열기" }).click();
-  await page
-    .locator("#mobile-nav")
-    .getByRole("link", { name: "진열용품" })
-    .click();
-  await expect(page.locator("#mobile-nav")).toHaveCount(0);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole("navigation", { name: "쇼룸 바로가기" })
+    .getByRole("link", { name: "제품", exact: true }).press("Enter");
   await expect(page).toHaveURL(/#products$/);
   expect(
     await page.evaluate(
       () => getComputedStyle(document.documentElement).scrollBehavior,
     ),
   ).toBe("auto");
+  await page.locator(".search-field input").fill("냉장고");
+  await expect(page.locator(".product-card")).toHaveCount(1);
+  await expect(page.locator(".product-card a[href$='/115261']")).toBeVisible();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.screenshot({ path: ".local/mobile-showroom-preview.png" });
 });
 
 test("접근성: 데스크톱과 모바일 WCAG A/AA 자동 검사", async ({ page }) => {

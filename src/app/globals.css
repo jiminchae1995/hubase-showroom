@@ -1327,7 +1327,7 @@ h1 > span:not(.title-period) {
   border-radius: 20px;
   background: #f3f3f3;
   font-size: 10px;
-  color: #777d83;
+  color: #62686f;
 }
 .modal-purchase {
   margin-top: auto;
@@ -2196,5 +2196,204 @@ h1 > span:not(.title-period) {
   .button:hover,
   .floating-product:hover {
     transform: none;
+  }
+}
+
+.mobile-tab-bar,
+.mobile-showroom-title {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  html {
+    scroll-padding-top: calc(64px + env(safe-area-inset-top));
+    scroll-padding-bottom: calc(68px + env(safe-area-inset-bottom));
+  }
+
+  body {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom));
+  }
+
+  .site-header {
+    height: calc(58px + env(safe-area-inset-top));
+    padding-top: env(safe-area-inset-top);
+    background: #fff;
+  }
+
+  .header-inner,
+  .container {
+    width: calc(100% - 32px);
+  }
+
+  .header-mall {
+    min-height: 44px;
+    font-size: 12px;
+  }
+
+  .mobile-toggle {
+    display: none;
+  }
+
+  .mobile-tab-bar {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 25;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    padding: 4px max(10px, env(safe-area-inset-right)) calc(4px + env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+    background: #fffffff5;
+    backdrop-filter: blur(16px);
+    border-top: 1px solid #e6e7e9;
+  }
+
+  .mobile-tab-bar a {
+    display: flex;
+    min-height: 54px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border-radius: 10px;
+    color: #454952;
+    font-size: 11px;
+    font-weight: 650;
+  }
+
+  .mobile-tab-bar a:active {
+    background: #fdecee;
+    color: var(--red);
+  }
+
+  #main {
+    display: flex;
+    flex-direction: column;
+    reading-flow: flex-visual;
+  }
+
+  .hero {
+    order: -3;
+    padding-top: calc(58px + env(safe-area-inset-top));
+    background: #fff;
+  }
+
+  .hero-grid,
+  .hero-background,
+  .hero-bottom,
+  .shorts-section .section-heading {
+    display: none;
+  }
+
+  .mobile-showroom-title {
+    display: block;
+    margin: 0 auto;
+    padding: 24px 0 12px;
+    font-size: clamp(23px, 6.6vw, 32px);
+    line-height: 1.35;
+    letter-spacing: -0.05em;
+    word-break: keep-all;
+  }
+
+  .shorts-section.section-space {
+    order: -2;
+    padding-top: 0;
+  }
+
+  .shorts-carousel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  .shorts-carousel .shorts-track {
+    grid-area: 1 / 1 / 2 / -1;
+  }
+
+  .shorts-carousel .shorts-bottom {
+    grid-area: 2 / 1;
+    margin: 0;
+  }
+
+  .shorts-carousel .shorts-toolbar {
+    grid-area: 2 / 2;
+    margin: 0;
+  }
+
+  .products-section { order: -1; }
+
+  .section-space { padding-block: 36px; }
+  .product-filters { margin-top: 18px; gap: 12px; }
+  .search-field {
+    order: -1;
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid #e2e4e7;
+    border-radius: 12px;
+    padding: 0 12px;
+    background: #fff;
+  }
+
+  .search-field input { font-size: 16px; }
+  .filter-tabs {
+    flex-wrap: nowrap;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 2px;
+  }
+
+  .filter-tabs > button {
+    flex: 0 0 auto;
+    min-height: 44px;
+    white-space: nowrap;
+    font-size: 12px;
+  }
+
+  .product-count { margin: 14px 0 10px; }
+  .product-count > span:last-child { font-size: 12px; }
+
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+  }
+
+  .product-card { display: flex; flex-direction: column; }
+  .product-copy {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 12px 10px 10px;
+  }
+  .product-category { font-size: 10px; }
+  .product-copy h3 { min-height: 0; font-size: 15px; }
+  .product-copy > p { min-height: 0; font-size: 12px; }
+  .product-actions {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 0;
+  }
+  .product-actions > a,
+  .product-actions > button {
+    display: flex;
+    width: 100%;
+    min-height: 44px;
+    justify-content: center;
+    background: #f5f5f6;
+    border-radius: 9px;
+    font-size: 12px;
+  }
+
+  .short-card { flex-basis: clamp(200px, 64%, 320px); }
+  .carousel-controls .icon-button { width: 44px; height: 44px; }
+}
+
+@media (max-width: 350px) {
+  .product-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 767px) {
+  .shorts-track,
+  .story-grid {
+    margin-right: -16px;
+    padding-right: 16px;
   }
 }

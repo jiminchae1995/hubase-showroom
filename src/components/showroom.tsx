@@ -17,6 +17,9 @@ import {
   ChevronLeft,
   ChevronRight,
   Grid2X2,
+  House,
+  Play,
+  Store,
   ImageIcon,
   Layers3,
   Menu,
@@ -49,6 +52,13 @@ const navItems = [
   ["진열용품", "products"],
   ["영상", "shorts"],
   ["도입사례", "stories"],
+];
+
+const mobileNavItems = [
+  { label: "홈", id: "showroom", Icon: House },
+  { label: "제품", id: "products", Icon: Grid2X2 },
+  { label: "쇼츠", id: "shorts", Icon: Play },
+  { label: "도입 사례", id: "stories", Icon: Store },
 ];
 
 function Logo() {
@@ -237,6 +247,9 @@ export default function Showroom() {
 
       <main id="main">
         <section id="showroom" className="hero" ref={hero}>
+          <h1 className="mobile-showroom-title container">
+            우리 약국에 필요한 진열용품,<br /> 30초 안에 찾아보세요.
+          </h1>
           <div className="hero-background">
             {showroom.heroImageUrl ? (
               <MediaImage
@@ -275,7 +288,7 @@ export default function Showroom() {
                 <span>커뮤니케이션 진열</span>
               </h1>
               <p className="hero-description">
-                고객에게 먼저 말을 건네고,
+                고객에게 먼저 말을 건네고,{" "}
                 <br />
                 약사의 설명에는 신뢰를 더합니다.
               </p>
@@ -332,7 +345,7 @@ export default function Showroom() {
                 짧은 영상으로 하나씩 살펴보세요.
               </p>
             </Reveal>
-            <Reveal>
+            <Reveal className="shorts-carousel">
               <div className="shorts-toolbar">
                 <div className="carousel-controls">
                   <button
@@ -664,6 +677,14 @@ export default function Showroom() {
           </a>
         </div>
       </footer>
+      <nav className="mobile-tab-bar" aria-label="쇼룸 바로가기">
+        {mobileNavItems.map(({ label, id, Icon }) => (
+          <a key={id} href={`#${id}`}>
+            <Icon size={21} aria-hidden="true" />
+            <span>{label}</span>
+          </a>
+        ))}
+      </nav>
       {modal && <Modal content={modal} onClose={() => setModal(null)} />}
     </>
   );
