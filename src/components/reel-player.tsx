@@ -13,25 +13,26 @@ export function ReelPlayer({ products, initialIndex }: { products: Product[]; in
   const [muted, setMuted] = useState(true);
   const [playing, setPlaying] = useState(false);
   const [failed, setFailed] = useState(false);
-  const [likedIds, setLikedIds] = useState(() => {
+  const [likeCounts, setLikeCounts] = useState<Record<string, number>>(() => {
+    const counts: Record<string, number> = {};
     try {
-      return new Set(products.filter((item) => localStorage.getItem("hubase:like:" + item.id) === "1").map((item) => item.id));
-    } catch { return new Set<string>(); }
+      for (const item of products) {
+        const count = Number(localStorage.getItem("hubase:like:" + item.id));
+        counts[item.id] = Number.isSafeInteger(count) && count > 0 ? count : 0;
+      }
+    } catch { /* Likes still work for this visit when storage is unavailable. */ }
+    return counts;
   });
   const [shareResult, setShareResult] = useState<{ id: string; link?: string } | null>(null);
   const product = products[index];
-  const liked = likedIds.has(product.id);
+  const likeCount = likeCounts[product.id] ?? 0;
 
-  function toggleLike() {
-    const next = new Set(likedIds);
-    if (liked) next.delete(product.id);
-    else next.add(product.id);
-    setLikedIds(next);
+  function addLike() {
+    const nextCount = likeCount + 1;
+    setLikeCounts({ ...likeCounts, [product.id]: nextCount });
     try {
-      const key = "hubase:like:" + product.id;
-      if (liked) localStorage.removeItem(key);
-      else localStorage.setItem(key, "1");
-    } catch { /* Keep the selection for this visit if browser storage is unavailable. */ }
+      localStorage.setItem("hubase:like:" + product.id, String(nextCount));
+    } catch { /* Keep the count in memory for this visit. */ }
   }
 
   async function shareVideo() {
@@ -116,7 +117,7 @@ export function ReelPlayer({ products, initialIndex }: { products: Product[]; in
       <div className="reel-footer">
         <div className="reel-details" aria-live="polite">
           <div className="reel-profile">
-            <img src={assetPath("/icon.png")} alt="" width="30" height="30" />
+            <span className="reel-avatar" aria-hidden="true"><img src={assetPath("/images/showroom-profile.webp")} alt="" width="768" height="512" /></span>
             <span>@휴베이스 약국 솔루션</span>
             {purchase && <a className="reel-purchase" href={purchase} target="_blank" rel="noopener noreferrer" aria-label={product.name + " 구매하기"}>구매</a>}
           </div>
@@ -130,8 +131,8 @@ export function ReelPlayer({ products, initialIndex }: { products: Product[]; in
           {failed && <p role="status">영상을 불러오지 못했어요. 재생 버튼을 눌러 다시 시도하세요.</p>}
         </div>
         <div className="reel-controls">
-          <button className="reel-social" aria-label="좋아요" title="이 브라우저에서 누른 좋아요" aria-pressed={liked} onClick={toggleLike}>
-            <Heart fill={liked ? "currentColor" : "none"} /><span>{liked ? 1 : 0}</span>
+          <button className="reel-social" aria-label="좋아요" title="이 브라우저에서 누른 좋아요" data-liked={likeCount > 0} onClick={addLike}>
+            <Heart fill={likeCount ? "currentColor" : "none"} /><span aria-live="polite">{likeCount}</span>
           </button>
           <button className="reel-social" aria-label="공유" onClick={shareVideo}>
             <Share2 /><span>공유</span>
