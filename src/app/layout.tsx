@@ -7,8 +7,8 @@ const pretendard = localFont({ src: "../../public/fonts/PretendardVariable.woff2
 
 export const viewport: Viewport = { viewportFit: "cover" };
 
-const title = "휴베이스 진열용품 ｜ 우리 약국에 필요한 진열용품 알아보기";
-const description = "디바이더부터 푸셔까지, 짧은 사용 영상과 실제 약국의 진열 사례를 살펴보세요.";
+const title = "휴베이스 진열용품";
+const description = "우리 약국에 필요한 진열용품 알아보기";
 
 export const metadata: Metadata = {
   title,
