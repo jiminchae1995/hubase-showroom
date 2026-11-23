@@ -59,7 +59,7 @@ export default function Modal({
         if (e.key !== "Tab") return;
         const focusable = Array.from(
           e.currentTarget.querySelectorAll<HTMLElement>(
-            'button:not([disabled]), a[href], video[controls], iframe, [tabindex="0"]',
+            'button:not([disabled]), a[href], input:not([disabled]), video[controls], iframe, [tabindex="0"]',
           ),
         );
         const first = focusable[0];

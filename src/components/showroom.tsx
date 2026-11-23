@@ -200,6 +200,21 @@ export default function Showroom() {
     }
   }, []);
 
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("reel");
+    const shared = shorts.find((item) => item.id === id);
+    if (shared) openVideo(shared);
+  }, [openVideo]);
+
+  function closeModal() {
+    setModal(null);
+    const url = new URL(window.location.href);
+    if (url.searchParams.has("reel")) {
+      url.searchParams.delete("reel");
+      window.history.replaceState(window.history.state, "", url);
+    }
+  }
+
   return (
     <>
       <a className="skip-link" href="#main">
@@ -692,7 +707,7 @@ export default function Showroom() {
           </a>
         ))}
       </nav>
-      {modal && <Modal content={modal} onClose={() => setModal(null)} />}
+      {modal && <Modal content={modal} onClose={closeModal} />}
     </>
   );
 }

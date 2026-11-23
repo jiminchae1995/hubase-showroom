@@ -2467,3 +2467,17 @@ h1 > span:not(.title-period) {
 .reel-controls button:disabled { opacity: .4; }
 .reel-controls svg { width: 20px; }
 .reel-purchase { gap: 6px; padding: 0 16px; background: white; color: #151515; font-size: 14px; font-weight: 650; }
+
+.reel-profile { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 13px; font-weight: 650; }
+.reel-profile img { width: 30px; height: 30px; border-radius: 50%; background: white; }
+.reel-details { min-width: 0; text-shadow: 0 1px 5px #000; }
+.reel-details h2 { margin-bottom: 3px; }
+.reel-description { font-size: 14px; line-height: 1.45; margin: 0 0 12px; word-break: keep-all; }
+.reel-details .reel-purchase { text-shadow: none; }
+.reel-footer { background: linear-gradient(transparent, #000c 55%, #000e); }
+.reel-controls button[aria-pressed="true"] { color: #ff6381; }
+.reel-playback { position: absolute; top: calc(12px + env(safe-area-inset-top)); right: calc(max(14px, env(safe-area-inset-right)) + 50px); display: flex; gap: 6px; }
+.reel-playback button { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: #151515ba; color: white; }
+.reel-playback svg { width: 20px; }
+.reel-share-link { display: grid; font-size: 13px; margin: 8px 0; pointer-events: auto; }
+.reel-share-link input { width: 100%; padding: 8px; color: #171717; background: white; }
