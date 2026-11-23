@@ -7,10 +7,13 @@ const pretendard = localFont({ src: "../../public/fonts/PretendardVariable.woff2
 
 export const viewport: Viewport = { viewportFit: "cover" };
 
+const title = "휴베이스 진열용품 ｜ 우리 약국에 필요한 진열용품 알아보기";
+const description = "디바이더부터 푸셔까지, 짧은 사용 영상과 실제 약국의 진열 사례를 살펴보세요.";
+
 export const metadata: Metadata = {
-  title: "HUBASE 쇼룸 | 약국 진열의 기준을 바꾸다",
-  description:
-    "작지만 확실한 변화. 휴베이스 약국 진열용품을 용도별로 살펴보고, 짧은 영상으로 우리 약국에 필요한 진열 솔루션을 만나보세요.",
+  title,
+  description,
+  openGraph: { title, description, type: "website", locale: "ko_KR" },
   robots: { index: false, follow: false }, // 로컬 검토용. 공개 시 운영 도메인과 함께 수정하세요.
 };
 
