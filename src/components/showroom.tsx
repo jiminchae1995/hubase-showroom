@@ -191,7 +191,14 @@ export default function Showroom() {
         .toLocaleLowerCase()
         .includes(query.trim().toLocaleLowerCase()),
   );
-  const openVideo = useCallback((product: Product) => setModal({ type: "video", product }), []);
+  const openVideo = useCallback((product: Product) => {
+    const index = shorts.findIndex((item) => item.id === product.id);
+    if (index >= 0 && window.matchMedia("(max-width: 767px)").matches) {
+      setModal({ type: "reels", products: shorts, index });
+    } else {
+      setModal({ type: "video", product });
+    }
+  }, []);
 
   return (
     <>

@@ -7,7 +7,10 @@ import type { Product, Story } from "@/data/showroom";
 import { getVimeoEmbedUrl, safePurchaseUrl } from "@/data/showroom";
 import { MediaImage } from "./media-image";
 
+import { ReelPlayer } from "./reel-player";
+
 export type ModalContent =
+  | { type: "reels"; products: Product[]; index: number }
   | { type: "video"; product: Product }
   | { type: "story"; story: Story }
   | { type: "mall" };
@@ -27,6 +30,8 @@ export default function Modal({
     const current = dialog.current;
     const oldOverflow = document.body.style.overflow;
     current?.showModal();
+    const feed = current?.querySelector<HTMLElement>(".reel-feed");
+    if (feed) feed.scrollTop = Number(feed.dataset.start) * feed.clientHeight;
     document.body.style.overflow = "hidden";
     return () => {
       current?.close();
@@ -44,7 +49,7 @@ export default function Modal({
   return (
     <dialog
       ref={dialog}
-      className={`media-dialog ${content.type === "mall" ? "small-dialog" : ""}`}
+      className={`media-dialog ${content.type === "mall" ? "small-dialog" : content.type === "reels" ? "reel-dialog" : ""}`}
       aria-labelledby="modal-title"
       onCancel={(e) => {
         e.preventDefault();
@@ -81,6 +86,7 @@ export default function Modal({
         >
           <X size={21} />
         </button>
+        {content.type === "reels" && <ReelPlayer products={content.products} initialIndex={content.index} />}
         {product && (
           <div className="video-layout">
             <div className="video-stage">
