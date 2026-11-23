@@ -7,6 +7,7 @@ import type { Product, Story } from "@/data/showroom";
 import { getVimeoEmbedUrl, safePurchaseUrl } from "@/data/showroom";
 import { MediaImage } from "./media-image";
 
+import { MobileNav } from "./mobile-nav";
 import { ReelPlayer } from "./reel-player";
 
 export type ModalContent =
@@ -86,7 +87,12 @@ export default function Modal({
         >
           <X size={21} />
         </button>
-        {content.type === "reels" && <ReelPlayer products={content.products} initialIndex={content.index} />}
+        {content.type === "reels" && (
+          <>
+            <ReelPlayer products={content.products} initialIndex={content.index} />
+            <MobileNav onNavigate={close} />
+          </>
+        )}
         {product && (
           <div className="video-layout">
             <div className="video-stage">

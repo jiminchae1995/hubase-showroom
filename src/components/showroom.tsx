@@ -17,9 +17,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Grid2X2,
-  House,
-  Play,
-  Store,
   ImageIcon,
   Layers3,
   Menu,
@@ -38,6 +35,7 @@ import {
   type Category,
   type Product,
 } from "@/data/showroom";
+import { MobileNav } from "./mobile-nav";
 import { Reveal } from "./reveal";
 import { MediaImage } from "./media-image";
 import { ShortVideoCard } from "./short-video-card";
@@ -52,13 +50,6 @@ const navItems = [
   ["진열용품", "products"],
   ["영상", "shorts"],
   ["도입사례", "stories"],
-];
-
-const mobileNavItems = [
-  { label: "홈", id: "showroom", Icon: House },
-  { label: "제품", id: "products", Icon: Grid2X2 },
-  { label: "쇼츠", id: "shorts", Icon: Play },
-  { label: "도입 사례", id: "stories", Icon: Store },
 ];
 
 function Logo() {
@@ -699,14 +690,7 @@ export default function Showroom() {
           </a>
         </div>
       </footer>
-      <nav className="mobile-tab-bar" aria-label="쇼룸 바로가기">
-        {mobileNavItems.map(({ label, id, Icon }) => (
-          <a key={id} href={`#${id}`}>
-            <Icon size={21} aria-hidden="true" />
-            <span>{label}</span>
-          </a>
-        ))}
-      </nav>
+      <MobileNav />
       {modal && <Modal content={modal} onClose={closeModal} />}
     </>
   );

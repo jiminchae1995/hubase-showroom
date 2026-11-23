@@ -1,12 +1,13 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { ArrowUpRight, ChevronDown, ChevronUp, Heart, Share2, Pause, Play, Volume2, VolumeX } from "lucide-react";
+import { ChevronDown, ChevronUp, Heart, Share2, Pause, Play, Volume2, VolumeX } from "lucide-react";
 import { assetPath } from "../data/asset-path";
 import { safePurchaseUrl, type Product } from "@/data/showroom";
 
 export function ReelPlayer({ products, initialIndex }: { products: Product[]; initialIndex: number }) {
   const feed = useRef<HTMLDivElement>(null);
+  const progress = useRef<HTMLProgressElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const [index, setIndex] = useState(initialIndex);
   const [muted, setMuted] = useState(true);
@@ -81,6 +82,7 @@ export function ReelPlayer({ products, initialIndex }: { products: Product[]; in
         const track = event.currentTarget;
         const next = Math.max(0, Math.min(products.length - 1, Math.round(track.scrollTop / track.clientHeight)));
         if (next !== index) {
+          if (progress.current) progress.current.value = 0;
           setPlaying(false);
           setFailed(false);
           setShareResult(null);
@@ -94,6 +96,10 @@ export function ReelPlayer({ products, initialIndex }: { products: Product[]; in
               <video ref={video} src={assetPath(item.videoUrl)} playsInline autoPlay loop muted={muted}
                 poster={item.videoThumbnail ? assetPath(item.videoThumbnail) : undefined}
                 aria-label={item.name + " 소개 영상"} onClick={togglePlayback}
+                onTimeUpdate={(event) => {
+                  const player = event.currentTarget;
+                  if (progress.current && player.duration > 0) progress.current.value = player.currentTime / player.duration;
+                }}
                 onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)}
                 onError={() => { setPlaying(false); setFailed(true); }}>
                 {item.videoCaptionsUrl && <track kind="captions" src={assetPath(item.videoCaptionsUrl)} srcLang="ko" label="한국어" default />}
@@ -112,6 +118,7 @@ export function ReelPlayer({ products, initialIndex }: { products: Product[]; in
           <div className="reel-profile">
             <img src={assetPath("/icon.png")} alt="" width="30" height="30" />
             <span>@휴베이스 약국 솔루션</span>
+            {purchase && <a className="reel-purchase" href={purchase} target="_blank" rel="noopener noreferrer" aria-label={product.name + " 구매하기"}>구매</a>}
           </div>
           <h2 id="modal-title">{product.name}</h2>
           <p className="reel-description">{product.shortDescription}</p>
@@ -121,15 +128,19 @@ export function ReelPlayer({ products, initialIndex }: { products: Product[]; in
               : <p role="status">영상 링크를 복사했어요.</p>
           )}
           {failed && <p role="status">영상을 불러오지 못했어요. 재생 버튼을 눌러 다시 시도하세요.</p>}
-          {purchase && <a className="reel-purchase" href={purchase} target="_blank" rel="noopener noreferrer">구매하러 가기 <ArrowUpRight size={16} /></a>}
         </div>
         <div className="reel-controls">
-          <button aria-label="좋아요" aria-pressed={liked} onClick={toggleLike}><Heart fill={liked ? "currentColor" : "none"} /></button>
-          <button aria-label="공유" onClick={shareVideo}><Share2 /></button>
+          <button className="reel-social" aria-label="좋아요" title="이 브라우저에서 누른 좋아요" aria-pressed={liked} onClick={toggleLike}>
+            <Heart fill={liked ? "currentColor" : "none"} /><span>{liked ? 1 : 0}</span>
+          </button>
+          <button className="reel-social" aria-label="공유" onClick={shareVideo}>
+            <Share2 /><span>공유</span>
+          </button>
           <button disabled={index === 0} onClick={() => move(-1)} aria-label="이전 제품 영상"><ChevronUp /></button>
           <button disabled={index === products.length - 1} onClick={() => move(1)} aria-label="다음 제품 영상"><ChevronDown /></button>
         </div>
       </div>
+      <progress className="reel-progress" ref={progress} value={0} max={1} aria-label="영상 재생 진행률" />
     </div>
   );
 }
