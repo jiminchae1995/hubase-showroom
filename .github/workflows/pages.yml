@@ -17,6 +17,8 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      PAGES_ARTIFACT_NAME: github-pages-${{ github.run_attempt }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -36,7 +38,26 @@ jobs:
         env:
           NEXT_PUBLIC_SHOWROOM_BASE_PATH: ${{ steps.pages.outputs.base_path }}
       - uses: actions/upload-pages-artifact@v3
+        id: upload
         with:
+          name: ${{ env.PAGES_ARTIFACT_NAME }}
           path: out
+      - name: Wait for the uploaded Pages artifact
+        shell: bash
+        env:
+          PAGES_ARTIFACT_ID: ${{ steps.upload.outputs.artifact_id }}
+        run: |
+          artifact_url="$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?name=$PAGES_ARTIFACT_NAME"
+          for attempt in {1..12}; do
+            if curl --fail --silent --max-time 5 -H 'Cache-Control: no-cache' "$artifact_url" \
+              | jq -e --arg id "$PAGES_ARTIFACT_ID" 'any(.artifacts[]; (.id | tostring) == $id and (.expired | not))' >/dev/null; then
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "::error::GitHub Pages artifact $PAGES_ARTIFACT_ID did not appear in the workflow run."
+          exit 1
       - uses: actions/deploy-pages@v4
         id: deployment
+        with:
+          artifact_name: ${{ env.PAGES_ARTIFACT_NAME }}
