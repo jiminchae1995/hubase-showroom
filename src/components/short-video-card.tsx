@@ -137,7 +137,7 @@ export const ShortVideoCard = memo(function ShortVideoCard({ product, index, onO
       <span className="short-preview-label" aria-hidden="true"><VolumeX size={13} />무음 미리보기</span>
       <div className="short-info">
         <span className="short-category">{product.category[0]}</span>
-        <h3>{product.name}</h3>
+        <h2>{product.name}</h2>
         <p>{product.shortDescription}</p>
         <span className="short-duration">{product.videoDuration || (product.videoUrl ? "영상 연결" : "COMING SOON")}</span>
       </div>

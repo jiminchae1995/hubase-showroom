@@ -4,24 +4,15 @@ import { assetPath } from "../data/asset-path";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "motion/react";
 import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "motion/react";
-import {
-  ArrowDown,
   ArrowRight,
   ArrowUpRight,
   ChevronLeft,
   ChevronRight,
-  Grid2X2,
   ImageIcon,
-  Layers3,
   Menu,
   Search,
-  ShoppingBag,
   SlidersHorizontal,
   X,
 } from "lucide-react";
@@ -81,13 +72,7 @@ export default function Showroom() {
   const [shortsInView, setShortsInView] = useState(false);
   const [hoveredShortId, setHoveredShortId] = useState<string | null>(null);
   const [autoPreviewIndex, setAutoPreviewIndex] = useState(0);
-  const hero = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: hero,
-    offset: ["start start", "end start"],
-  });
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 65]);
   const autoPreviewEnabled =
     shortsInView && pageVisible && !reduced && modal === null && hoveredShortId === null;
   const autoPreviewId = autoPreviewShorts[autoPreviewIndex]?.id;
@@ -208,7 +193,7 @@ export default function Showroom() {
 
   return (
     <>
-      <a className="skip-link" href="#main">
+      <a className="skip-link" href="#showroom">
         본문으로 건너뛰기
       </a>
       <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
@@ -258,87 +243,7 @@ export default function Showroom() {
         )}
       </header>
 
-      <main id="main">
-        <section id="showroom" className="hero" ref={hero}>
-          <h1 className="mobile-showroom-title container">
-            우리 약국에 필요한 진열용품,<br /> 30초 안에 찾아보세요.
-          </h1>
-          <div className="hero-background">
-            {showroom.heroImageUrl ? (
-              <MediaImage
-                src={showroom.heroImageUrl}
-                alt={showroom.heroImageAlt}
-                sizes="100vw"
-                priority
-                quality={90}
-                fallback={
-                  <div className="hero-image-missing">
-                    <ImageIcon />
-                    <span>실제 약국 사진 준비 중</span>
-                  </div>
-                }
-              />
-            ) : (
-              <div
-                className="reference-image"
-                role="img"
-                aria-label="제공된 디자인 시안의 약국 진열 이미지. 실제 현장 사진은 준비 중입니다."
-              />
-            )}
-          </div>
-          <div className="hero-grid container">
-            <motion.div
-              className="hero-copy"
-              style={{ y: reduced ? 0 : heroY }}
-            >
-              <span className="eyebrow hero-eyebrow">
-                <span className="red-line" />
-                Hubase Communicative Display
-              </span>
-              <h1>
-                말을 건네는,
-                <br />
-                <span>커뮤니케이션 진열</span>
-              </h1>
-              <p className="hero-description">
-                고객에게 먼저 말을 건네고,{" "}
-                <br />
-                약사의 설명에는 신뢰를 더합니다.
-              </p>
-              <div className="hero-benefits">
-                <div>
-                  <Grid2X2 />
-                  <span>
-                    <strong>고객에게 말을 걸어주는</strong>
-                    <small>필요한 정보가 먼저 눈에 들어오도록</small>
-                  </span>
-                </div>
-                <div>
-                  <Layers3 />
-                  <span>
-                    <strong>약사의 말을 도와주는</strong>
-                    <small>제품의 특징을 쉽게 설명할 수 있도록</small>
-                  </span>
-                </div>
-                <div>
-                  <ShoppingBag />
-                  <span>
-                    <strong>약사의 말에 신뢰를 더하는</strong>
-                    <small>정돈된 진열이 설명을 뒷받침하도록</small>
-                  </span>
-                </div>
-              </div>
-            </motion.div>
-            <div className="hero-visual" aria-hidden="true" />
-          </div>
-          <div className="hero-bottom container">
-            <a href="#shorts">
-              SCROLL TO EXPLORE
-              <ArrowDown size={13} />
-            </a>
-          </div>
-        </section>
-
+      <main id="showroom" className="showroom-main" tabIndex={-1}>
         <section id="shorts" className="shorts-section section-space" ref={shortsSection}>
           <div className="container">
             <Reveal className="section-heading">
@@ -346,11 +251,14 @@ export default function Showroom() {
                 <span className="eyebrow">
                   HUBASE SHORTS
                 </span>
-                <h2>
-                  30초로 만나는
-                  <br className="mobile-break" /> 진열의 변화
-                  <span className="red-dot">.</span>
-                </h2>
+                <h1>
+                  <span className="shorts-title-desktop">
+                    30초로 만나는 진열의 변화<span className="red-dot">.</span>
+                  </span>
+                  <span className="shorts-title-mobile">
+                    우리 약국에 필요한 진열용품,<br /> 30초 안에 찾아보세요.
+                  </span>
+                </h1>
               </div>
               <p>
                 우리 약국에는 어떤 진열용품이 필요할까요?

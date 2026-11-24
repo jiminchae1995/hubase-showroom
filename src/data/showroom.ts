@@ -114,6 +114,21 @@ export const products: Product[] = [
   },
   {
     ...pendingMedia,
+    id: "rear-divider",
+    imageUrl: "/images/products/rear-divider-studio.webp",
+    videoUrl: "/videos/showroom/rear-divider.mp4",
+    videoThumbnail: "/images/video-thumbnails/rear-divider.webp",
+    videoPreviewUrl: "/videos/previews/rear-divider.mp4",
+    videoDuration: "00:22",
+    name: "후면 디바이더",
+    shortDescription: "선반 뒤로 상품이 떨어지지 않도록.",
+    category: ["상품 정리"],
+    searchTags: ["낙하 방지", "선반 뒤쪽", "받침", "투명"],
+    illustration: "divider",
+    shortTitle: "선반 뒤 낙하 방지",
+  },
+  {
+    ...pendingMedia,
     id: "manual-pusher",
     purchaseUrl: "https://www.hubase.kr/goods/115159",
     imageUrl: "/images/products/manual-pusher-studio.png",
@@ -164,6 +179,7 @@ export const products: Product[] = [
 
 export const shortProductIds = [
   "clip-divider",
+  "rear-divider",
   "divider-base",
   "manual-pusher",
   "auto-pusher",
@@ -210,8 +226,6 @@ export const stories: Story[] = [
 export const showroom = {
   headerMallUrl: "https://www.hubase.kr/shop/goods/search?keyword=%EC%A7%84%EC%97%B4%EC%9A%A9%ED%92%88",
   mallUrl: null as string | null,
-  heroImageUrl: "/images/hero-pharmacy-upscaled-v2.webp" as string | null,
-  heroImageAlt: "휴베이스 약국 내부와 진열대 모습 (AI 보정 이미지)",
 };
 
 export function safePurchaseUrl(value: string | null): string | null {

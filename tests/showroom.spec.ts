@@ -5,10 +5,14 @@ test("제품 탐색: 분류, 검색, 빈 결과, 초기화", async ({ page }) =>
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
-  await expect(page.locator(".product-card")).toHaveCount(10);
+  await expect(page.locator(".product-card")).toHaveCount(9);
   await page.getByRole("button", { name: "가격표 표시", exact: true }).click();
-  await expect(page.locator(".product-card")).toHaveCount(4);
-  await page.getByRole("button", { name: "전체 10", exact: true }).click();
+  await expect(page.locator(".product-card")).toHaveCount(3);
+  await page.getByRole("button", { name: "상품 정리", exact: true }).click();
+  await page.getByRole("searchbox").fill("낙하 방지");
+  await expect(page.locator(".product-card")).toHaveCount(1);
+  await expect(page.locator(".product-card").getByRole("heading")).toHaveText("후면 디바이더");
+  await page.getByRole("button", { name: "전체 9", exact: true }).click();
   await page.getByRole("searchbox").fill("칸막이");
   await expect(page.locator(".product-card")).toHaveCount(2);
   await page.getByRole("searchbox").fill("없는제품xyz");
@@ -16,7 +20,7 @@ test("제품 탐색: 분류, 검색, 빈 결과, 초기화", async ({ page }) =>
   await page
     .getByRole("button", { name: "전체 제품 보기", exact: true })
     .click();
-  await expect(page.locator(".product-card")).toHaveCount(10);
+  await expect(page.locator(".product-card")).toHaveCount(9);
   expect(errors).toEqual([]);
 });
 
@@ -59,10 +63,11 @@ test("클립형 디바이더 MP4 모달: 연결, 포커스 가두기, ESC, 포�
   );
 });
 
-test("쇼츠 카드 7개가 각 MP4에 연결됨", async ({ page }) => {
+test("쇼츠 카드 8개가 각 MP4에 연결됨", async ({ page }) => {
   await page.goto("/");
   const videos = [
     ["클립형 디바이더", "clip-divider"],
+    ["후면 디바이더", "rear-divider"],
     ["베이스레일", "divider-base"],
     ["수동 푸셔", "manual-pusher"],
     ["자동 푸셔", "auto-pusher"],
@@ -71,6 +76,7 @@ test("쇼츠 카드 7개가 각 MP4에 연결됨", async ({ page }) => {
     ["프론트선반", "front-shelf"],
   ];
 
+  await expect(page.locator(".short-card")).toHaveCount(videos.length);
   for (const [name, id] of videos) {
     await page.getByRole("button", { name: name + " 영상 보기", exact: true }).click();
     const player = page.locator(".video-stage video source");
@@ -103,7 +109,7 @@ test("캐러셀, 현장 사례, 구매 링크", async ({ page }) => {
   const purchaseLinks = page.locator(".product-card").getByRole("link", { name: "구매하러 가기" });
   await expect(purchaseLinks).toHaveCount(8);
   for (const id of ["115261", "115209", "115159", "116095", "115443", "115161", "116632", "115157"]) {
-    await expect(page.locator(`.product-card a[href="https://www.hubase.kr/goods/${id}"]`)).toHaveCount(1);
+    await expect(purchaseLinks.and(page.locator(`a[href="https://www.hubase.kr/goods/${id}"]`))).toHaveCount(1);
   }
 });
 
@@ -114,7 +120,7 @@ test("모바일 하단 메뉴 및 9개 화면 폭에서 가로 넘침 없음", a
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth),
     ).toBe(width);
-    await expect(page.locator(".product-card")).toHaveCount(8);
+    await expect(page.locator(".product-card")).toHaveCount(9);
   }
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole("navigation", { name: "쇼룸 바로가기" })

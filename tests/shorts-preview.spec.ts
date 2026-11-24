@@ -14,7 +14,7 @@ test("영상 지연 로딩, 10초 순환, 호버 우선 재생과 모달 전환"
   await page.mouse.move(0, 0);
   await expect(first).toHaveClass(/is-previewing/);
   const scrollY = await page.evaluate(() => window.scrollY);
-  const second = page.getByRole("button", { name: "베이스레일 영상 보기", exact: true });
+  const second = page.getByRole("button", { name: "후면 디바이더 영상 보기", exact: true });
   await expect(second).toHaveClass(/is-previewing/, { timeout: 14_000 });
   expect(Math.abs(await page.evaluate(() => window.scrollY) - scrollY)).toBeLessThan(2);
   expect(requestedVideos.every((url) => url.includes("/videos/previews/"))).toBe(true);

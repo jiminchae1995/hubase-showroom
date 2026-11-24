@@ -1,4 +1,3 @@
-import { assetPath } from "../data/asset-path";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
@@ -34,7 +33,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko" className={pretendard.variable}>
-      <body style={{ "--showroom-reference": `url("${assetPath("/images/design-reference.png")}")` } as React.CSSProperties}>{children}</body>
+      <body>{children}</body>
     </html>
   );
 }
