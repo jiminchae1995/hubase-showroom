@@ -3,6 +3,7 @@
 import { assetPath } from "../data/asset-path";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "motion/react";
 import {
@@ -55,6 +56,13 @@ function Logo() {
       />
     </span>
   );
+}
+
+function trackFranchiseLogoClick() {
+  const { gtag } = window as Window & {
+    gtag?: (command: "event", eventName: string) => void;
+  };
+  gtag?.("event", "franchise_logo_click");
 }
 
 export default function Showroom() {
@@ -582,9 +590,13 @@ export default function Showroom() {
       </main>
       <footer className="site-footer container">
         <div>
-          <a href="#showroom" aria-label="휴베이스 쇼룸 홈">
+          <Link
+            href="/franchise-1"
+            aria-label="가상 가맹 페이지 1 열기"
+            onClick={trackFranchiseLogoClick}
+          >
             <Logo />
-          </a>
+          </Link>
           <p>좋은 진열이, 더 좋은 약국을 만듭니다.</p>
         </div>
         <div className="footer-right">

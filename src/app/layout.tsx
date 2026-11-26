@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
+import Script from "next/script";
 
 const pretendard = localFont({ src: "../../public/fonts/PretendardVariable.woff2", variable: "--showroom-font", weight: "45 920", display: "swap" });
 
@@ -33,7 +34,20 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko" className={pretendard.variable}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Script id="showroom-google-tag" strategy="beforeInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function () { window.dataLayer.push(arguments); };
+            window.gtag('js', new Date());
+          `}
+        </Script>
+        <Script
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-N58JWHS7"
+          strategy="afterInteractive"
+        />
+      </body>
     </html>
   );
 }
