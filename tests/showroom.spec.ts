@@ -63,7 +63,7 @@ test("클립형 디바이더 MP4 모달: 연결, 포커스 가두기, ESC, 포�
   );
 });
 
-test("쇼츠 카드 8개가 각 MP4에 연결됨", async ({ page }) => {
+test("쇼츠 카드 9개가 각 MP4에 연결됨", async ({ page }) => {
   await page.goto("/");
   const videos = [
     ["클립형 디바이더", "clip-divider"],
@@ -72,6 +72,7 @@ test("쇼츠 카드 8개가 각 MP4에 연결됨", async ({ page }) => {
     ["수동 푸셔", "manual-pusher"],
     ["자동 푸셔", "auto-pusher"],
     ["프라이스레일", "standard-rail"],
+    ["냉장고 프라이스레일", "fridge-rail"],
     ["스윙홀더", "swing-holder"],
     ["프론트선반", "front-shelf"],
   ];

@@ -73,6 +73,10 @@ export const products: Product[] = [
     id: "fridge-rail",
     purchaseUrl: "https://www.hubase.kr/goods/115261",
     imageUrl: "/images/products/fridge-rail-studio.png",
+    videoUrl: "/videos/showroom/fridge-rail.mp4",
+    videoThumbnail: "/images/video-thumbnails/fridge-rail.webp",
+    videoPreviewUrl: "/videos/previews/fridge-rail.mp4",
+    videoDuration: "00:27",
     name: "냉장고 프라이스레일",
     shortDescription: "냉장고 안 가격표도 한눈에 읽기 쉽게.",
     category: ["가격표 표시"],
@@ -184,6 +188,7 @@ export const shortProductIds = [
   "manual-pusher",
   "auto-pusher",
   "standard-rail",
+  "fridge-rail",
   "swing-holder",
   "front-shelf",
 ];
